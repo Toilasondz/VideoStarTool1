@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý License Key iOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        header p {
+            color: var(--text-sub);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-card .label {
+            color: var(--text-sub);
+            font-size: 13px;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 8px;
+            color: #fff;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-sub);
+        }
+
+        input, select {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: fit-content;
+            align-self: flex-end;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #172033;
+            color: var(--text-sub);
+            font-weight: 600;
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .key-badge {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: 700;
+            background: rgba(79, 70, 229, 0.15);
+            color: #818cf8;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-expired {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .status-locked {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .device-badge {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            border-color: #fff;
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>🔑 License Key Manager (iOS Tool)</h1>
+                <p>Quản lý kích hoạt bản quyền cho Tweak / Tool IPA</p>
+            </div>
+            <button class="btn" onclick="fetchKeys()">🔄 Làm Mới</button>
+        </header>
+
+        <!-- Thống kê -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Tổng số Key</div>
+                <div class="value" id="stat-total">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Đang Hoạt Động</div>
+                <div class="value" id="stat-active" style="color: var(--success);">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Đã Gắn Thiết Bị</div>
+                <div class="value" id="stat-bound" style="color: #818cf8;">0</div>
+            </div>
+        </div>
+
+        <!-- Form tạo Key -->
+        <div class="card">
+            <div class="card-title">➕ Tạo Mã Key Mới</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Ghi chú (Tên khách / Zalo):</label>
+                    <input type="text" id="keyNote" placeholder="Ví dụ: Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label>Thời hạn:</label>
+                    <select id="keyDuration">
+                        <option value="1">1 Ngày (Dùng thử)</option>
+                        <option value="7">7 Ngày (1 Tuần)</option>
+                        <option value="30" selected>30 Ngày (1 Tháng)</option>
+                        <option value="90">90 Ngày (3 Tháng)</option>
+                        <option value="365">365 Ngày (1 Năm)</option>
+                        <option value="3650">Vĩnh Viễn (10 Năm)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gói tính năng:</label>
+                    <select id="keyPackage">
+                        <option value="VIP">VIP (Toàn bộ tính năng)</option>
+                        <option value="BASIC">Cơ bản</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Key tùy chỉnh (Để trống để tự tạo ngẫu nhiên):</label>
+                    <input type="text" id="customKey" placeholder="Ví dụ: VIP-BANBE-2026">
+                </div>
+                <button class="btn" onclick="createKey()">Tạo Key</button>
+            </div>
+        </div>
+
+        <!-- Bảng danh sách Key -->
+        <div class="card">
+            <div class="card-title">📋 Danh Sách License Key</div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã Key</th>
+                            <th>Khách Hàng</th>
+                            <th>Gói</th>
+                            <th>Hạn Sử Dụng</th>
+                            <th>Trạng Thái</th>
+                            <th>Thiết Bị (Device ID)</th>
+                            <th>Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="keyTableBody">
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-sub);">Đang tải dữ liệu...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchKeys() {
+            try {
+                const res = await fetch('/admin/api/keys');
+                const keys = await res.json();
+                renderTable(keys);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderTable(keys) {
+            const tbody = document.getElementById('keyTableBody');
+            tbody.innerHTML = '';
+
+            let activeCount = 0;
+            let boundCount = 0;
+            const now = Date.now();
+
+            if (keys.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-sub);">Chưa có Key nào. Hãy tạo một Key mới ở trên!</td></tr>';
+            }
+
+            keys.forEach(k => {
+                const isExpired = now > k.expires_at;
+                const isLocked = !k.is_active;
+
+                if (!isExpired && !isLocked) activeCount++;
+                if (k.device_id) boundCount++;
+
+                let statusHtml = '<span class="status-badge status-active">Hoạt động</span>';
+                if (isLocked) {
+                    statusHtml = '<span class="status-badge status-locked">Đã Khóa</span>';
+                } else if (isExpired) {
+                    statusHtml = '<span class="status-badge status-expired">Hết Hạn</span>';
+                }
+
+                const expireDate = new Date(k.expires_at).toLocaleDateString('vi-VN');
+                const deviceText = k.device_id 
+                    ? `<span class="device-badge" title="${k.device_id}">${k.device_id.substring(0, 12)}...</span>`
+                    : '<span style="color: var(--text-sub); font-size: 12px;">(Chưa kích hoạt)</span>';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="key-badge">${k.key}</span></td>
+                    <td>${k.note || '-'}</td>
+                    <td><b>${k.package_name}</b></td>
+                    <td>${expireDate}</td>
+                    <td>${statusHtml}</td>
+                    <td>${deviceText}</td>
+                    <td>
+                        ${k.device_id ? `<button class="btn-action" onclick="resetDevice('${k.key}')" title="Gỡ thiết bị để khách đổi máy">Gỡ Máy</button>` : ''}
+                        <button class="btn-action" onclick="toggleStatus('${k.key}', ${k.is_active ? 0 : 1})">${k.is_active ? 'Khóa' : 'Mở'}</button>
+                        <button class="btn-action btn-delete" onclick="deleteKey('${k.key}')">Xóa</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('stat-total').innerText = keys.length;
+            document.getElementById('stat-active').innerText = activeCount;
+            document.getElementById('stat-bound').innerText = boundCount;
+        }
+
+        async function createKey() {
+            const note = document.getElementById('keyNote').value;
+            const durationDays = document.getElementById('keyDuration').value;
+            const packageName = document.getElementById('keyPackage').value;
+            const customKey = document.getElementById('customKey').value;
+
+            const res = await fetch('/admin/api/keys/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ note, durationDays, packageName, customKey })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('keyNote').value = '';
+                document.getElementById('customKey').value = '';
+                fetchKeys();
+            } else {
+                alert(data.message || 'Lỗi tạo key');
+            }
+        }
+
+        async function resetDevice(key) {
+            if (confirm(`Gỡ thiết bị cho key ${key}? Người dùng sẽ có thể kích hoạt key trên máy mới.`)) {
+                await fetch('/admin/api/keys/reset-device', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key })
+                });
+                fetchKeys();
+            }
+        }
+
+        async function toggleStatus(key, newStatus) {
+            await fetch('/admin/api/keys/toggle-status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, isActive: newStatus })
+            });
+            fetchKeys();
+        }
+
+        async function deleteKey(key) {
+            if (confirm(`Bạn có chắc muốn xóa vĩnh viễn key ${key}?`)) {
+                await fetch('/admin/api/keys/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key })
+                });
+                fetchKeys();
+            }
+        }
+
+        // Tự động load dữ liệu khi vào trang
+        fetchKeys();
+    </script>
+</body>
+</html>
